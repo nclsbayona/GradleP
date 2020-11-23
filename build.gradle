@@ -1,3 +1,16 @@
+apply plugin: "java"
+//Para el run
+apply plugin: "application"
+sourceCompatibility="1.8"
+version="1.0"
+//Para saber que debo correr
+mainClassName="view.Main"
+jar{
+    manifest{
+        attributes "Main-Class": mainClassName
+        //Para añadir más propiedades se pondría , y ya se pueden definir más atributos
+    }
+}
 task hola_mundo {
     ext{
         nombre="Nicolas"
