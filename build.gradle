@@ -1,5 +1,37 @@
 task hola_mundo {
+    ext{
+        nombre="Nicolas"
+        correo="correo@mail.com"
+        github_user="nclsbayona"
+    }
     doLast{
         println 'Hola mundo'
     }
+}
+
+task adios_mundo{
+    doLast{
+        //Mostrando propiedades almacenadas en otras tareas
+        println 'Hola '+hola_mundo.nombre
+    }
+}
+
+task prueba_fuego{
+    ext{
+        nombre="Lucas"
+    }
+    doLast{
+        println 'Hola '+hola_mundo.nombre+' y '+nombre
+    }
+}
+
+task otrasPruebas{
+    //Propiedad
+    ext{
+        hola="1"
+    }
+}
+
+otrasPruebas.doLast{
+    println "Fuera de la task"+hola
 }
