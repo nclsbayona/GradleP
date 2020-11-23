@@ -34,5 +34,5 @@ task otrasPruebas{
 
 otrasPruebas.doLast{
     String nombre="Nicolas"
-    println "Fuera de la task"+hola+', '+nombre
+    println "Fuera de la task "+hola+', '+nombre
 }
