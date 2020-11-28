@@ -49,3 +49,95 @@ otrasPruebas.doLast{
     String nombre="Nicolas"
     println "Fuera de la task "+hola+', '+nombre
 }
+//Ejemplo dependencia ciclica
+task a{
+    doLast{
+        println 'Tarea A'
+    }
+}
+
+task b{
+    /*dependsOn{
+        'a'
+    }*/
+    doLast{
+        println 'Tarea B'
+    }
+}
+
+task dependencia{
+    dependsOn{
+        ['a', 'b']
+    }
+    doFirst{
+        System.out.println("Bye");
+    }
+    doLast{
+        println otrasPruebas.hola
+    }
+}
+
+//mustRunAfter es para decir que debe correr luego de haberse ejecutado otra tarea
+//Si se corre a, b , prueba_fuego el orden es 3, 1, 2
+a.mustRunAfter 'prueba_fuego'
+
+//Definir condiciones para ejecucion tarea
+task tareaA{
+    doLast{
+        println 'Hola tareaA'
+    }
+    finalizedBy{
+        ['tareaB', 'prueba_fuego']
+    }
+}
+
+task tareaB{
+    dependsOn{
+        'tareaA'
+    }
+    onlyIf{
+        tareaA.didWork
+        new File("READM.md").exists();
+    }
+    doLast{
+        println 'Ahora B '
+    }
+}
+//Gradle docs tiene tareas que ya fueron creadas
+task crearN{
+    doLast{
+        new File("this").mkdir()
+    }
+    finalizedBy{
+        copiar
+    }
+}
+
+
+
+task ejecutar (type: Exec){
+    commandLine 'cat'
+    standardOutput=new FileOutputStream("this/salida.txt");
+    standardInput=new FileInputStream("this/entrada.txt");
+}
+task copiar(type: Copy, dependsOn: ejecutar){
+    onlyIf{
+        ejecutar.didWork
+    }
+    doLast{
+        from 'this'
+        into 'this/hola'
+    }
+    finalizedBy{
+        prueba_fuego
+    }
+}
+task compresion(type: Zip, dependsOn: copiar){
+    onlyIf{
+        copiar.didWork
+    }
+    doLast{
+        from 'this'
+        archiveName 'archivoZip.zip'
+    }
+}
