@@ -1,8 +1,12 @@
-apply plugin: "java"
+plugins{
+    id 'java'
+    id 'base'
+    id 'application'
+}
 //Para el run
-apply plugin: "application"
+//apply plugin: "application"
 sourceCompatibility="1.8"
-version="1.0"
+version="1.0.0"
 //Para saber que debo correr
 mainClassName="view.Main"
 jar{
@@ -11,6 +15,17 @@ jar{
         //Para añadir más propiedades se pondría , y ya se pueden definir más atributos
     }
 }
+
+repositories{
+    mavenCentral()
+}
+
+dependencies{
+    implementation 'org.openjfx:javafx-fxml:16-ea+4'
+    implementation 'org.openjfx:javafx-graphics:16-ea+4'
+    implementation 'org.openjfx:javafx-controls:16-ea+4'
+}
+
 task hola_mundo {
     ext{
         nombre="Nicolas"
@@ -97,7 +112,7 @@ task tareaB{
     }
     onlyIf{
         tareaA.didWork
-        new File("READM.md").exists();
+        new File("README.md").exists();
     }
     doLast{
         println 'Ahora B '
@@ -114,18 +129,19 @@ task crearN{
 }
 
 
-task ejecutar (type: Exec, dependsOn: 'copiar'){
-    commandLine 'cat'
-    standardInput=new FileInputStream("this/entrada.txt");
-    standardOutput=new FileOutputStream("this/salida.txt");
-}
-
 task copiar (type: Copy){
     from 'this'
     into 'new'
 }
 
-task compresion(type: Zip, dependsOn: copiar){
-    from 'new'
-    archiveName 'archivo.zip'
+task copiar2(type: Copy){
+    from "this/entrada.txt"
+    into "new/seg_entrada"
+}
+
+//Ni idea por que no sirve 
+task compresion (type: Zip){
+    archiveFileName = "my-distribution.zip"
+    destinationDirectory = file("$buildDir")
+    from "$buildDir/new/entrada.txt"
 }
