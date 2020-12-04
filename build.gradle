@@ -114,30 +114,18 @@ task crearN{
 }
 
 
-
-task ejecutar (type: Exec){
+task ejecutar (type: Exec, dependsOn: 'copiar'){
     commandLine 'cat'
-    standardOutput=new FileOutputStream("this/salida.txt");
     standardInput=new FileInputStream("this/entrada.txt");
+    standardOutput=new FileOutputStream("this/salida.txt");
 }
-task copiar(type: Copy, dependsOn: ejecutar){
-    onlyIf{
-        ejecutar.didWork
-    }
-    doLast{
-        from 'this'
-        into 'this/hola'
-    }
-    finalizedBy{
-        prueba_fuego
-    }
+
+task copiar (type: Copy){
+    from 'this'
+    into 'new'
 }
+
 task compresion(type: Zip, dependsOn: copiar){
-    onlyIf{
-        copiar.didWork
-    }
-    doLast{
-        from 'this'
-        archiveName 'archivoZip.zip'
-    }
+    from 'new'
+    archiveName 'archivo.zip'
 }
