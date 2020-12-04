@@ -2,13 +2,25 @@ plugins{
     id 'java'
     id 'base'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 //Para el run
 //apply plugin: "application"
-sourceCompatibility="1.8"
+//Para las dependencias
+repositories{
+    mavenCentral()
+}
+
+sourceCompatibility="11"
 version="1.0.0"
 //Para saber que debo correr
-mainClassName="view.Main"
+mainClassName="view.JFX"
+
+javafx {
+    version = "13"
+    modules = [ 'javafx.controls','javafx.fxml' ]
+}
+
 jar{
     manifest{
         attributes "Main-Class": mainClassName
@@ -16,14 +28,16 @@ jar{
     }
 }
 
-repositories{
-    mavenCentral()
-}
 
 dependencies{
+    /* Se sacan del maven repository
     implementation 'org.openjfx:javafx-fxml:16-ea+4'
     implementation 'org.openjfx:javafx-graphics:16-ea+4'
     implementation 'org.openjfx:javafx-controls:16-ea+4'
+     */
+    //JUnit
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    //testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
 }
 
 task hola_mundo {
