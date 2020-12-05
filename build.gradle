@@ -2,8 +2,10 @@ plugins{
     id 'java'
     id 'base'
     id 'application'
+    id 'jacoco'
     id 'org.openjfx.javafxplugin' version '0.0.9'
 }
+
 //Para el run
 //apply plugin: "application"
 //Para las dependencias
@@ -21,6 +23,7 @@ javafx {
     modules = [ 'javafx.controls','javafx.fxml' ]
 }
 
+
 jar{
     manifest{
         attributes "Main-Class": mainClassName
@@ -30,14 +33,44 @@ jar{
 
 
 dependencies{
-    /* Se sacan del maven repository
+    /*Se sacan del maven repository
     implementation 'org.openjfx:javafx-fxml:16-ea+4'
     implementation 'org.openjfx:javafx-graphics:16-ea+4'
-    implementation 'org.openjfx:javafx-controls:16-ea+4'
-     */
-    //JUnit
+    implementation 'org.openjfx:javafx-controls:16-ea+4'*/
+    //JUnit 5
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-    //testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.0'
+    //JUnit 4 & Before
+    // https://mvnrepository.com/artifact/junit/junit
+    testCompile group: 'junit', name: 'junit', version: '4.13.1'
+    // https://mvnrepository.com/artifact/org.junit.vintage/junit-vintage-engine
+    testCompile group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.0'
+}
+
+//Para JUnit
+test{
+    useJUnitPlatform{
+        //includeEngines 'junit-vintage'
+        //excludeEngines 'junit-jupiter'
+    }
+    testLogging.showStandardStreams=true
+    testLogging{
+        events 'passed','skipped','failed'
+    }
+    finalizedBy 'jacocoTestReport'
+}
+
+
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("$buildDir/JacocoReports")
+}
+
+
+jacocoTestReport {
+    dependsOn test
 }
 
 task hola_mundo {
