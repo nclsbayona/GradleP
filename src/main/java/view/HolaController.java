@@ -52,9 +52,7 @@ public class HolaController {
         Color green = Color.web("#01e824");
         Color red = Color.web("#bc1d0f");
         double width = this.lab1.getScene().getWindow().getWidth();
-        for (int i = 0; i < 5; i++) {
-            this.count += 1;
-            hola.setText(String.valueOf(this.count));
+            hola.setText(String.valueOf(++this.count));
             if (this.lab1.getTextFill().equals(newCG)) {
                 this.lab1.setTextFill(red);
                 this.lab2.setTextFill(green);
@@ -81,7 +79,6 @@ public class HolaController {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
     }
 
     @FXML

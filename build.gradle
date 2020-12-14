@@ -52,6 +52,7 @@ dependencies{
 //Para JUnit
 test{
     useJUnitPlatform{
+        //JUnit 4&Before
         //includeEngines 'junit-vintage'
         //excludeEngines 'junit-jupiter'
     }
